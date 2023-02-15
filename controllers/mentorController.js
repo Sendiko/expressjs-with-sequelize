@@ -68,47 +68,41 @@ module.exports = {
     }
   },
   update: async (req, res) => {
-    const mentors = await mentor.update(
-      {
-        name: req.body.name,
-        class: req.body.class,
+    const mentors = await mentor.update(req.body, {
+      where: {
+        id: req.params.id,
       },
-      {
-        where: {
-          id: req.params.id,
-        },
-      }
-    );
-    if (mentors == null){
+    });
+    if (mentors == null) {
       res.status(404).json({
         status: 404,
-        message: 'data not found',
-        data: null
-      })
+        message: "data not found",
+        data: null,
+      });
     } else {
       res.status(200).json({
-        status: 200, 
-        message: 'data successfully updated',
-      })
+        status: 200,
+        message: "data successfully updated",
+      });
     }
   },
   delete: async (req, res) => {
     const mentors = mentor.destroy({
       where: {
-        id: req.params.id
-      }
-    })
-    if(mentors == null){
+        id: req.params.id,
+      },
+    });
+    if (mentors == null) {
       res.status(404).json({
         status: 404,
-        message: 'data not found',
-        data: null
-      })
+        message: "data not found",
+        data: null,
+      });
     } else {
       res.status(200).json({
-        status: 200, 
-        message: 'data successfully deleted',
-      })
+        status: 200,
+        message: "data successfully deleted",
+      });
     }
-  }
+  },
 };
