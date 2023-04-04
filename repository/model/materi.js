@@ -12,6 +12,10 @@ const materi = database.define("materi", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  imageName: {
+    type: DataTypes.TEXT,
+    allowNull: false
+  },
 });
 
 materi
