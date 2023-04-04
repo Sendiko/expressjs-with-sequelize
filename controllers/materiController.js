@@ -2,7 +2,7 @@ const materyyyy = require("../repository/model/materi");
 const subbabbbbb = require("../repository/model/subbab");
 
 module.exports = {
-  data: async function(req, res) {
+  data: async function (req, res) {
     try {
       const materi = await materyyyy.findAll();
       res.status(200).json({
@@ -47,8 +47,16 @@ module.exports = {
   },
   createMateri: async function (req, res) {
     try {
+      var url =
+        req.protocol +
+        "://" +
+        req.get("host") +
+        "/images/" +
+        req.body.imageName;
+      console.log(req.body);
       const materi = await materyyyy.create({
         judul: req.body.judul,
+        imageName: url,
       });
       res.status(201).json({
         status: 201,
@@ -85,11 +93,23 @@ module.exports = {
   },
   updateMateri: async function (req, res) {
     try {
-      await materyyyy.update(req.body, {
-        where: {
-          id: req.params.id,
+      var url =
+        req.protocol +
+        "://" +
+        req.get("host") +
+        "/images/" +
+        req.body.imageName;
+      await materyyyy.update(
+        {
+          judul: req.body.judul,
+          imageName: url,
         },
-      });
+        {
+          where: {
+            id: req.params.id,
+          },
+        }
+      );
       res.status(200).json({
         status: 200,
         message: "data successfully updated",
@@ -123,7 +143,7 @@ module.exports = {
   },
   deleteMateri: async function (req, res) {
     try {
-      const materi = materyyyy.destroy({
+      await materyyyy.destroy({
         where: {
           id: req.params.id,
         },
@@ -142,7 +162,7 @@ module.exports = {
   },
   deleteSubbab: async function (req, res) {
     try {
-      const subbab = subbabbbbb.destroy({
+      await subbabbbbb.destroy({
         where: {
           id: req.params.id,
         },
