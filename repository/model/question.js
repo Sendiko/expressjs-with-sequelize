@@ -13,7 +13,9 @@ const question = database.define("question", {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  
+  answers: {
+    type: DataTypes.JSON
+  }
 });
 
 question
@@ -24,7 +26,5 @@ question
   .catch((error) => {
     console.error("unable to create table: ", +error);
   });
-
-question.hasMany(answer);
 
 module.exports = question;

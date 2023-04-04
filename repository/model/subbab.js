@@ -13,7 +13,7 @@ const subbab = database.define("subbab", {
     allowNull: false,
   },
   isi: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
   },
   belongTo: {
