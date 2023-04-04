@@ -11,8 +11,10 @@ app.use(
   })
 );
 
+app.use('/images', express.static('public/images'))
+
 app.use(router);
 
 app.listen(PORT, () => {
-  console.log(`server is running on: ` + PORT);
+  console.log(`server is running on: ` + PORT, '10.212.79.11:3000');
 });
