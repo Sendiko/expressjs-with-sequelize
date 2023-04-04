@@ -11,11 +11,11 @@ router.post("/mentors", mentorController.store);
 router.put("/mentors/:id", mentorController.update);
 router.delete("/mentors/:id", mentorController.delete);
 
-router.get("/quiz", quizController.data);
-router.get("/quiz/:id", quizController.index);
-router.post("/quiz", quizController.storeQuestion);
-router.post("/answer", quizController.storeAnswer);
-router.post("/submit", quizController.submitAnswers);
+router.get("/api/quiz", quizController.data);
+router.get("/api/quiz/:id", quizController.index);
+router.post("/api/quiz", quizController.storeQuestion);
+router.post("/api/answer", quizController.storeAnswer);
+router.post("/api/submit", quizController.submitAnswers);
 
 router.get("/api/materi", materiController.data);
 router.get("/api/materi/:id", materiController.index);
