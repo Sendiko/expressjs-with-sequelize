@@ -58,6 +58,7 @@ module.exports = {
     try {
       const questions = await question.create({
         question: req.body.question,
+        answers: [] 
       });
       res.status(201).json({
         status: 201,
@@ -68,35 +69,30 @@ module.exports = {
       res.status(500).json({
         status: 500,
         message: "server error.",
-        data: error,
+        data: error.message,
       });
     }
   },
   storeAnswer: async (req, res) => {
     try {
-      const questions = await question.findOne({ where: { id: req.body.questionId } });
+      const questionnn = await question.findOne({ where: { id: req.body.questionId } });
       const answers = await answer.create({
         answer: req.body.answer,
         isCorrect: req.body.isCorrect,
         questionId: req.body.questionId,
       });
-      console.log(questions);
-      const newQuestion = await question.create({
-        id: questions.id,
-        question: questions.question,
-        answers: answers,
-      });
       res.status(201).json({
         status: 201,
         message: "data successfully created",
-        question: newQuestion,
+        answers: answers,
+        questionItBelongsTo: questionnn
       });
     } catch (error) {
       console.error(error);
       res.status(500).json({
         status: 500,
         message: "server error.",
-        data: error,
+        data: error.message,
       });
     }
   },
@@ -113,17 +109,20 @@ module.exports = {
       let totalQuestion = request.questionId.length;
       for (let i = 0; i < totalQuestion; i++) {
         const answers = await answer.findOne({
-          where: { id: request.answer },
+          where: { id: request.answer[i] },
           order: [["id", "DESC"]],
         });
-        if (answers.isCorrect == true) {
-          response.answer.push(true);
-          response.questionId.push(request.questionId[i]);
-        } else {
-          response.answer.push(false);
-          response.questionId.push(request.questionId[i]);
-        }
+        response.questionId.push(request.questionId[i]);
+        response.answer.push(answers.isCorrect)
       }
+      res.status(200).json({
+        status: 200,
+        message: "data successfully sent",
+        result: {
+          questionId: response.questionId,
+          answer: response.answer
+        },
+      })
     } catch (error) {
       console.error(error);
       res.status(500).json({
