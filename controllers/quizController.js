@@ -102,26 +102,28 @@ module.exports = {
         questionId: req.body.questionIds,
         answer: req.body.answers,
       };
-      const response = {
-        questionId: [],
-        answer: [],
-      };
+      const response = [];
+      let result = {};
+      let correct = 0; 
       let totalQuestion = request.questionId.length;
       for (let i = 0; i < totalQuestion; i++) {
         const answers = await answer.findOne({
           where: { id: request.answer[i] },
           order: [["id", "DESC"]],
         });
-        response.questionId.push(request.questionId[i]);
-        response.answer.push(answers.isCorrect)
+        result = { "questionId": request.questionId[i], "isCorrect": answers.isCorrect}
+        console.log("result:", result);
+        if (answers.isCorrect) {
+          correct++; // increase the score by 1 for each correct answer
+        }
+        response.push(result);
       }
+      let score = (correct / totalQuestion ) * 100
       res.status(200).json({
         status: 200,
-        message: "data successfully sent",
-        result: {
-          questionId: response.questionId,
-          answer: response.answer
-        },
+        message: `you got ${correct} right out of ${totalQuestion}`,
+        score: score,
+        result: response
       })
     } catch (error) {
       console.error(error);
