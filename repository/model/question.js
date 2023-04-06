@@ -2,21 +2,30 @@ const { Sql, DataTypes } = require("sequelize");
 const database = require("../database");
 const answer = require("./answer");
 
-const question = database.define("question", {
-  id: {
-    type: DataTypes.BIGINT,
-    allowNull: false,
-    autoIncrement: true,
-    primaryKey: true,
+const question = database.define(
+  "question",
+  {
+    id: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    question: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
   },
-  question: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  answers: {
-    type: DataTypes.JSON
+  {
+    getterMethods: {
+      answers() {
+        return this.getAnswers();
+      },
+    },
   }
-});
+);
+
+question.hasMany(answer)
 
 question
   .sync()
